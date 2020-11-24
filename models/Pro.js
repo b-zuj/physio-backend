@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const proSchema = new Schema(
   {
@@ -26,7 +27,6 @@ const proSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Pro", proSchema);
+proSchema.plugin(passportLocalMongoose);
 
-// Name, Address, Contact, Status, Some document
-// Ref Clients:  [ {  __Client__ }, {  __Client__ }, {  __Client__ }]
+module.exports = mongoose.model("Pro", proSchema);
