@@ -4,9 +4,13 @@ const router = express.Router();
 const authControllers = require("../controllers/auth");
 
 // router
-  // .post('/auth/login', authControllers.login)
-  // .post('/auth/signup', authControllers.signup)
-  // .get('/pros/')
+//   .post('/auth/login', passport.authenticate('local', { 
+//       successRedirect: '/',
+//       failureRedirect: '/login',
+//       failureFlash: true 
+//     })
+//   .post('/auth/signup', authControllers.signup)
+//   .get('/pros/')
 
 
 // module.exports = router;
