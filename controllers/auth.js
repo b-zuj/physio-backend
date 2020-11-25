@@ -1,6 +1,6 @@
-const passport = require('passport');
-const passportLocal = require('../server/passport');
-const { ApplicationError, NotFoundError } = require('../utils/errors');
+const passport = require("passport");
+const passportLocal = require("../server/passport");
+const { ApplicationError, NotFoundError } = require("../utils/errors");
 
 const createCookieFromToken = (user, statusCode, req, res) => {
   const token = user.generateVerificationToken();
@@ -78,6 +78,7 @@ module.exports = {
   },
 
   protectedRoute: async (req, res) => {
+    console.log(req.user);
     res.status(200).json({
       status: "success",
       data: {

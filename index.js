@@ -1,33 +1,46 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 // const expressSession = require('express-session')({
 //   secret: 'loopers-secret',
 //   resave: false,
 //   saveUninitialized: false
 // });
-const passport = require('passport');
-const { NotFoundError } = require('./utils/errors');
-const cookieParser = require('cookie-parser');
+const passport = require("passport");
+const { NotFoundError } = require("./utils/errors");
+const cookieParser = require("cookie-parser");
 
-require('dotenv').config();
+require("dotenv").config();
 
-const Pro = require('./models/Pro');
-const authRoutes = require('./routes/auth');
+const Pro = require("./models/Pro");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 
-passport.initialize()
+passport.initialize();
 
 // app.use(expressSession);
 
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-app.use('/auth', authRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/", (_, res) => {
   res.status(200).json({
