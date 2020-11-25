@@ -25,6 +25,7 @@ options.jwtFromRequest = ExtractJwt.fromExtractors([
   req => cookieExtractor(req),
 ]);
 
+// modify with async await ?
 passport.use(
   new Strategy(options, (req, jwtPayload, done) => {
     Pro.findOne({ _id: jwtPayload.id })

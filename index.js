@@ -13,6 +13,7 @@ require('dotenv').config();
 
 const Pro = require('./models/Pro');
 const authRoutes = require('./routes/auth');
+const proRoutes = require('./routes/pro')
 
 const app = express();
 
@@ -29,6 +30,8 @@ passport.initialize()
 
 app.use('/auth', authRoutes);
 
+app.use('/pro', proRoutes);
+
 app.get("/", (_, res) => {
   res.status(200).json({
     status: "success",
@@ -38,7 +41,7 @@ app.get("/", (_, res) => {
 
 mongoose.connect(
   `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.55hby.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
   app.listen(process.env.PORT || 4000, () =>
     console.log(`App is running at port: ${process.env.PORT || 4000}`)
   )

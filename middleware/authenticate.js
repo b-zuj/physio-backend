@@ -1,4 +1,4 @@
-const passportJWT = require('../server/config');
+const passportJWT = require('../server/passportJwt');
 const { ApplicationError } = require('../utils/errors');
 
 module.exports = {
