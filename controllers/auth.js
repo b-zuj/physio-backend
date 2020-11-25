@@ -1,12 +1,12 @@
 const passport = require("passport");
-const passportLocal = require("../server/passport");
+const passportLocal = require("../server/passportLocal");
 const { ApplicationError, NotFoundError } = require("../utils/errors");
 
 const createCookieFromToken = (user, statusCode, req, res) => {
   const token = user.generateVerificationToken();
 
   const cookieOptions = {
-    expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+    expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
     httpOnly: true,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   };
@@ -21,17 +21,6 @@ const createCookieFromToken = (user, statusCode, req, res) => {
     },
   });
 };
-
-// module.exports = {
-//   login: (loginBody, collection) => {
-//     // passport?
-//   },
-//   signup: (req, res, next) => {
-//     const token = req.query.token;
-//     token ? console.log(token + ' - signup verified') : console.log('Signup successful');
-//     res.status(200).end();
-//   },
-// }
 
 module.exports = {
   signup: async (req, res, next) => {
@@ -79,6 +68,7 @@ module.exports = {
 
   protectedRoute: async (req, res) => {
     console.log(req.user);
+
     res.status(200).json({
       status: "success",
       data: {
