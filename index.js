@@ -13,6 +13,8 @@ require("dotenv").config();
 
 const Pro = require("./models/Pro");
 const authRoutes = require("./routes/auth");
+const proRoutes = require("./routes/pro");
+const sessionRoutes = require("./routes/session");
 
 const app = express();
 
@@ -41,6 +43,10 @@ passport.initialize();
 // app.use(passport.session());
 
 app.use("/auth", authRoutes);
+
+app.use("/pros", proRoutes);
+
+app.use("/sessions", sessionRoutes);
 
 app.get("/", (_, res) => {
   res.status(200).json({

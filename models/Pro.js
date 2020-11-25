@@ -57,7 +57,7 @@ proSchema.methods.comparePassword = async function (password) {
 
 proSchema.methods.generateVerificationToken = function () {
   return jwt.sign({ id: this._id }, jwtPrivateSecret, {
-    expiresIn: "10d",
+    expiresIn: "2h",
     algorithm: "RS256",
   });
 };
