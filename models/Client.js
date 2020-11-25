@@ -67,6 +67,7 @@ clientSchema.statics.checkExistingField = async (field, value) => {
   return checkField;
 };
 
+const Client = mongoose.model("Client", clientSchema);
 // clientSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("Client", clientSchema);
+module.exports = Client;
