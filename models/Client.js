@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // const passportLocalMongoose = require('passport-local-mongoose');
-const validator = require('validator');
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
-require('dotenv').config();
+const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
-const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET.replace(/\\n/gm, '\n')
+const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET.replace(/\\n/gm, "\n");
 
 const clientSchema = new Schema(
   {
@@ -39,16 +38,12 @@ const clientSchema = new Schema(
   { timestamps: true }
 );
 
-
 clientSchema.pre("save", async function (next) {
   if (!this.password || !this.isModified("password")) return next;
-  this.password = await bcrypt.hash(
-    this.password,
-    parseInt(process.env.HASH)
-    );
-    next();
-  });
-  
+  this.password = await bcrypt.hash(this.password, parseInt(process.env.HASH));
+  next();
+});
+
 clientSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();

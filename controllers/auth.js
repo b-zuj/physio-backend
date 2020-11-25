@@ -1,6 +1,8 @@
-const passport = require("passport");
-const passportLocal = require("../server/passportLocal");
-const { ApplicationError, NotFoundError } = require("../utils/errors");
+const passport = require('passport');
+const Client = require('../models/Client');
+const Pro = require('../models/Pro');
+const passportLocal = require('../server/passportLocal');
+const { ApplicationError, NotFoundError } = require('../utils/errors');
 
 const createCookieFromToken = (user, statusCode, req, res) => {
   const token = user.generateVerificationToken();
@@ -8,13 +10,13 @@ const createCookieFromToken = (user, statusCode, req, res) => {
   const cookieOptions = {
     expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   };
 
-  res.cookie("jwt", token, cookieOptions);
+  res.cookie('jwt', token, cookieOptions);
 
   res.status(statusCode).json({
-    status: "success",
+    status: 'success',
     token,
     data: {
       user,
@@ -25,7 +27,7 @@ const createCookieFromToken = (user, statusCode, req, res) => {
 module.exports = {
   signup: async (req, res, next) => {
     passport.authenticate(
-      "signup",
+      'signup',
       { session: false },
       async (err, user, info) => {
         try {
@@ -33,7 +35,7 @@ module.exports = {
             const { statusCode = 400, message } = info;
 
             return res.status(statusCode).json({
-              status: "error",
+              status: 'error',
               error: {
                 message,
               },
@@ -49,14 +51,14 @@ module.exports = {
   },
 
   login: (req, res, next) => {
-    passport.authenticate("login", { session: false }, (err, user, info) => {
+    passport.authenticate('login', { session: false }, (err, user, info) => {
       if (err || !user) {
         let message = err;
         if (info) {
           message = info.message;
         }
         return res.status(401).json({
-          status: "error",
+          status: 'error',
           error: {
             message,
           },
@@ -70,10 +72,24 @@ module.exports = {
     console.log(req.user);
 
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
-        message: "Yes you are. You are a Thor-n times developer",
+        message: 'Yes you are. You are a Thor-n times developer',
       },
     });
+  },
+
+  autoLogin: async (req, res) => {
+    let user = await Pro.findById(req.user._id).select('-password');
+    if (user) user.accType = 'pro';
+    if (!user) {
+      user = await Client.findById(req.user._id).select('-password');
+      user.accType = 'client';
+    }
+    if (!user)
+      return res
+        .status(404)
+        .send({ message: 'Session expired. Please log in again.' });
+    res.send({ ...user._doc });
   },
 };
