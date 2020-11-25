@@ -32,4 +32,4 @@ const sessionSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Pro", sessionSchema);
+module.exports = mongoose.model("Session", sessionSchema);
