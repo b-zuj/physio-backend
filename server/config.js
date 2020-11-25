@@ -3,8 +3,7 @@ const { ExtractJwt, Strategy } = require('passport-jwt');
 const Pro = require('../models/Pro')
 require('dotenv').config();
 
-
-const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET
+const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET.replace(/\\n/gm, '\n')
 
 const cookieExtractor = req => {
   let token = null;

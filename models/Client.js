@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
-const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET
+const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET.replace(/\\n/gm, '\n')
 
 const clientSchema = new Schema(
   {
