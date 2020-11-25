@@ -30,7 +30,7 @@ router
       await proControllers.deletePro(id);
       res.status(200).end()
     }),
-    )
+  )
 
 module.exports = router;
 

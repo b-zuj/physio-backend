@@ -1,7 +1,6 @@
 const passport = require('passport');
 const { ExtractJwt, Strategy } = require('passport-jwt');
 const Pro = require('../models/Pro')
-require('dotenv').config();
 
 const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET.replace(/\\n/gm, '\n')
 

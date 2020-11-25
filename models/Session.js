@@ -14,10 +14,12 @@ const sessionSchema = new Schema(
     client: {
       type: Schema.Types.ObjectId,
       ref: "Client",
+      required: true,
     },
     pro: {
       type: Schema.Types.ObjectId,
       ref: "Pro",
+      required: true,
     },
     exercises: [
       {

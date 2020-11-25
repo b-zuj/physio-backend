@@ -28,6 +28,7 @@ module.exports = {
       "signup",
       { session: false },
       async (err, user, info) => {
+        console.log(user)
         try {
           if (err || !user) {
             const { statusCode = 400, message } = info;
@@ -49,7 +50,9 @@ module.exports = {
   },
 
   login: (req, res, next) => {
+    console.log(req)
     passport.authenticate("login", { session: false }, (err, user, info) => {
+      console.log(user)
       if (err || !user) {
         let message = err;
         if (info) {
