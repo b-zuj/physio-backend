@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-require('dotenv').config();
 
 const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET.replace(/\\n/gm, '\n');
 

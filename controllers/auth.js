@@ -30,6 +30,7 @@ module.exports = {
       'signup',
       { session: false },
       async (err, user, info) => {
+        console.log(user)
         try {
           if (err || !user) {
             const { statusCode = 400, message } = info;

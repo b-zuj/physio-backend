@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // const passportLocalMongoose = require('passport-local-mongoose');
-const validator = require("validator");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const validator = require('validator');
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
 
 const jwtPrivateSecret = process.env.JWT_PRIVATE_SECRET.replace(/\\n/gm, "\n");
 
@@ -57,7 +57,7 @@ clientSchema.methods.comparePassword = async function (password) {
 
 clientSchema.methods.generateVerificationToken = function () {
   return jwt.sign({ id: this._id }, jwtPrivateSecret, {
-    expiresIn: "10d",
+    expiresIn: "2h",
     algorithm: "RS256",
   });
 };
