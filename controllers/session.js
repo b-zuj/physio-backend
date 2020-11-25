@@ -38,7 +38,7 @@ module.exports = {
     try {
       const clientId = await Session.findOne({ _id: id }).select('client-_id');
       console.log(clientId);
-      await Client.updateOne( clientId, { $pull: { sessions: [id] } } );
+      await Client.updateOne( clientId, { $pull: { sessions: [id] } }, {new: false});
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {
