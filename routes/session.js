@@ -27,7 +27,6 @@ router
     '/',
     errorHandler(async (req, res) => {
       const sessionValues = req.body;
-      console.log(sessionValues)
       const sessionData = await sessionControllers.createSession(sessionValues);
       res.json(sessionData).status(201).end();
     })

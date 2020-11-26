@@ -13,12 +13,6 @@ const exerciseSchema = new Schema(
     },
     media: String,
     duration: String,
-    sessions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Session",
-      },
-    ],
   },
   { timestamps: true }
 );

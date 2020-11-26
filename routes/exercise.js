@@ -10,8 +10,8 @@ router
   .get(
     '/',
     errorHandler(async (req, res) => {
-      const { session, title } = req.query;
-      const exercisesData = await exerciseControllers.getAllExercises(session, title);
+      const { title } = req.query;
+      const exercisesData = await exerciseControllers.getAllExercises(title);
       res.json(exercisesData).status(200).end();
     })
   )
@@ -27,7 +27,6 @@ router
   //   '/',
   //   errorHandler(async (req, res) => {
   //     const exerciseValues = req.body;
-  //     console.log(exerciseValues)
   //     const exerciseData = await exerciseControllers.createExercise(exerciseValues);
   //     res.json(exerciseData).status(201).end();
   //   })

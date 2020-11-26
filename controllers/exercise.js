@@ -2,9 +2,8 @@ const Session = require('../models/Session');
 const Exercise = require('../models/Exercise');
 
 module.exports = {
-  getAllExercises: async (session, title) => {
+  getAllExercises: async (title) => {
     const queryFilters = {};
-    session ? queryFilters['session'] = session : null;
     title ? queryFilters['title'] = title : null;
     const sessionsData = await Exercise.find(queryFilters).exec();
     return sessionsData;
