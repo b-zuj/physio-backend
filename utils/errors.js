@@ -1,5 +1,5 @@
 class ApplicationError extends Error {
-  constructor(statusCode, message = "an error occurred", errors) {
+  constructor(statusCode, message = 'an error occurred', errors) {
     super(message);
     this.statusCode = statusCode || 500;
     this.message = message;
@@ -9,7 +9,7 @@ class ApplicationError extends Error {
 
 class NotFoundError extends ApplicationError {
   constructor(message) {
-    super(404, message || "resource not found");
+    super(404, message || 'resource not found');
   }
 }
 

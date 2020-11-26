@@ -13,6 +13,10 @@ const exerciseSchema = new Schema(
     },
     media: String,
     duration: String,
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: "Pro",
+    },
   },
   { timestamps: true }
 );

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-// const passportLocalMongoose = require('passport-local-mongoose');
+
+const { Schema } = mongoose;
+
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -31,7 +32,7 @@ const proSchema = new Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 proSchema.pre('save', async function (next) {

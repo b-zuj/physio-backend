@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 
 const clientControllers = require('../controllers/client');
@@ -11,7 +12,7 @@ router
       const { pro } = req.query;
       const clientsData = await clientControllers.getAllClients(pro);
       res.json(clientsData).status(200).end();
-    })
+    }),
   )
   .get(
     '/:id',
@@ -19,7 +20,7 @@ router
       const { id } = req.params;
       const clientData = await clientControllers.getClient(id);
       res.json(clientData).status(200).end();
-    })
+    }),
   )
   .put(
     '/:id',
@@ -35,8 +36,8 @@ router
     errorHandler(async (req, res) => {
       const { id } = req.params;
       await clientControllers.deleteClient(id);
-      res.status(200).end()
+      res.status(200).end();
     }),
-  )
+  );
 
 module.exports = router;
