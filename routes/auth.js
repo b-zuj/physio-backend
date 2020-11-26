@@ -15,7 +15,6 @@ router
   .post('/signup', errorHandler(signup))
   .post('/client/signup', errorHandler(signupClient))
   .post('/login', errorHandler(login))
-  .get('/amiworthy', authenticate, errorHandler(protectedRoute))
   .get('/login', authenticate, errorHandler(autoLogin));
 
 module.exports = router;

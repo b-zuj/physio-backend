@@ -1,6 +1,8 @@
 const passport = require('passport');
 const { ExtractJwt, Strategy } = require('passport-jwt');
-const Pro = require('../models/Pro')
+const Pro = require('../models/Pro');
+const Client = require('../models/Client');
+const { ConnectionStates } = require('mongoose');
 
 const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET.replace(/\\n/gm, "\n");
 
@@ -24,23 +26,22 @@ options.jwtFromRequest = ExtractJwt.fromExtractors([
   (req) => cookieExtractor(req),
 ]);
 
-// modify with async await ?
 passport.use(
-  new Strategy(options, (req, jwtPayload, done) => {
-    Pro.findOne({ _id: jwtPayload.id })
-      .then((user) => {
-        if (user) {
-          delete user._doc.password;
-          done(null, user);
-        } else {
-          done(null, false);
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          return done(err, false);
-        }
-      });
+  new Strategy(options, async (req, jwtPayload, done) => {
+    try {
+      let user = await Pro.findOne({ _id: jwtPayload.id });
+      user ? user : user = await Client.findOne({ _id: jwtPayload.id });
+      if (user) {
+        delete user._doc.password;
+        done(null, user);
+      } else {
+        done(null, false);
+      }
+    } catch (err) {
+      if (err) {
+        return done(err, false);
+      }
+    }
   })
 );
 
