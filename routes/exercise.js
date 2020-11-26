@@ -9,8 +9,8 @@ router
   .get(
     '/',
     errorHandler(async (req, res) => {
-      const { title } = req.query;
-      const exercisesData = await exerciseControllers.getAllExercises(title);
+      const { pro, title } = req.query;
+      const exercisesData = await exerciseControllers.getAllExercises(pro, title);
       res.json(exercisesData).status(200).end();
     }),
   )

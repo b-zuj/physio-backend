@@ -5,10 +5,10 @@ module.exports = {
   getAllClients: async pro => {
     const queryFilters = {};
     pro ? queryFilters.pro = pro : null;
-    const clientsData = await Client.find(queryFilters).exec();
+    const clientsData = await Client.find(queryFilters).populate('sessions').exec();
     return clientsData;
   },
-  getClient: async id => Client.findOne({ _id: id }),
+  getClient: async id => Client.findOne({ _id: id }).populate('sessions').exec(),
   updateClient: async (id, data) => Client.findByIdAndUpdate(id, data, { new: true }),
   deleteClient: async id => {
     try {
