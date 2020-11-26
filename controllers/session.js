@@ -6,7 +6,6 @@ module.exports = {
     const queryFilters = {}
     pro ? queryFilters['pro'] = pro : null;
     client ? queryFilters['client'] = client : null;
-    console.log('sessions controllers', queryFilters);
     const sessionsData = await Session.find(queryFilters).exec();
     return sessionsData;
   },
@@ -17,8 +16,7 @@ module.exports = {
       const savedSession = await newSession.save();
       const clientId = values.client;
       const sessionId = savedSession._id;
-      const sessions = { sessions: { sessionId } }
-      await Client.findByIdAndUpdate(clientId, sessions, {new: false})
+      await Client.updateOne({ _id: clientId }, { $push: { sessions: [sessionId] } }, {new: false})
       return savedSession;
     } catch (err) {
       let message = err;
@@ -38,7 +36,7 @@ module.exports = {
     try {
       const clientId = await Session.findOne({ _id: id }).select('client-_id');
       console.log(clientId);
-      await Client.updateOne( clientId, { $pull: { sessions: [id] } }, {new: false});
+      await Client.updateOne({ _id: clientId }, { $pull: { sessions: [id] } }, {new: false});
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {

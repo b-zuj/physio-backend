@@ -45,7 +45,6 @@ passport.use(
           message: 'Email already registered, log in instead',
         });
       }
-      
       const newUser = new Pro();
       newUser.name = req.body.name,
       newUser.email = req.body.email;
@@ -70,12 +69,13 @@ passport.use(
           message: 'Email already registered, log in instead',
         });
       }
-
       const newUser = new Client();
       newUser.name = req.body.name,
       newUser.email = req.body.email;
       newUser.password = req.body.password;
       newUser.pro = req.body.pro;
+      const clientId = newUser._id;
+      await Pro.updateOne({ _id: newUser.pro }, { $push: { clients: [clientId] } }, {new: false})
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
