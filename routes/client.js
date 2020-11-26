@@ -1,20 +1,43 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const authControllers = require("../controllers/auth");
+const authControllers = require('../controllers/auth');
+const clientControllers = require('../controllers/client');
+const { errorHandler } = require('../utils/errorHandler');
 
-// router
-//   .post('/auth/login', authControllers.login)
-//   .post('/auth/signup/:token', authControllers.signup)
+router
+  .get(
+    '/',
+    errorHandler(async (req, res) => {
+      const { pro } = req.query;
+      const clientsData = await clientControllers.getAllClients(pro);
+      res.json(clientsData).status(200).end();
+    })
+  )
+  .get(
+    '/:id',
+    errorHandler(async (req, res) => {
+      const { id } = req.params;
+      const clientData = await clientControllers.getClient(id);
+      res.json(clientData).status(200).end();
+    })
+  )
+  .put(
+    '/:id',
+    errorHandler(async (req, res) => {
+      const { id } = req.params;
+      const updatedClientData = req.body;
+      const clientData = await clientControllers.updateClient(id, updatedClientData);
+      res.json(clientData).status(201).end();
+    }),
+  )
+  .delete(
+    '/:id',
+    errorHandler(async (req, res) => {
+      const { id } = req.params;
+      await clientControllers.deleteClient(id);
+      res.status(200).end()
+    }),
+  )
 
-// /auth
-// /login - POST login user
-// /signup - POST create user
-// /signup?token=1231jk23n12b3n12b3 - token contains: id of trainer and session details to create new user type: ‘client’
-
-// /clients
-// / - GET all users related to trainer
-// /:id - GET one user related to trainer
-// / - POST create new user, related to trainer
-// /:id POST edit user, related to trainer
-// /:id - DELETE user, can be done by a trainer
+module.exports = router;

@@ -1,31 +1,32 @@
-const express = require("express");
-const mongoose = require("mongoose");
+const express = require('express');
+const mongoose = require('mongoose');
 // const expressSession = require('express-session')({
 //   secret: 'loopers-secret',
 //   resave: false,
 //   saveUninitialized: false
 // });
-const passport = require("passport");
-const { NotFoundError } = require("./utils/errors");
-const cookieParser = require("cookie-parser");
+const passport = require('passport');
+const { NotFoundError } = require('./utils/errors');
+const cookieParser = require('cookie-parser');
 
-require("dotenv").config();
+require('dotenv').config();
 
-const Pro = require("./models/Pro");
-const authRoutes = require("./routes/auth");
-const proRoutes = require("./routes/pro");
-const sessionRoutes = require("./routes/session");
+const Pro = require('./models/Pro');
+const authRoutes = require('./routes/auth');
+const proRoutes = require('./routes/pro');
+const clientRoutes = require('./routes/client');
+const sessionRoutes = require('./routes/session');
 
 const app = express();
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
-    "Access-Control-Allow-Methods",
-    "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+    'Access-Control-Allow-Methods',
+    'OPTIONS, GET, POST, PUT, PATCH, DELETE'
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  if (req.method === "OPTIONS") {
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   next();
@@ -42,16 +43,17 @@ passport.initialize();
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-app.use("/auth", authRoutes);
+app.use('/auth', authRoutes);
 
-app.use("/pros", proRoutes);
+app.use('/pros', proRoutes);
+app.use('/clients', clientRoutes);
 
-app.use("/sessions", sessionRoutes);
+app.use('/sessions', sessionRoutes);
 
-app.get("/", (_, res) => {
+app.get('/', (_, res) => {
   res.status(200).json({
-    status: "success",
-    message: "Bonjour, Welcome, E Kaabo",
+    status: 'success',
+    message: 'Bonjour, Welcome, E Kaabo',
   });
 });
 

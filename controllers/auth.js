@@ -30,7 +30,31 @@ module.exports = {
       'signup',
       { session: false },
       async (err, user, info) => {
-        console.log(user)
+        try {
+          if (err || !user) {
+            const { statusCode = 400, message } = info;
+
+            return res.status(statusCode).json({
+              status: 'error',
+              error: {
+                message,
+              },
+            });
+          }
+          createCookieFromToken(user, 201, req, res);
+        } catch (error) {
+          console.log(error);
+          throw new ApplicationError(500, error);
+        }
+      }
+    )(req, res, next);
+  },
+
+  signupClient: async (req, res, next) => {
+    passport.authenticate(
+      'signupClient',
+      { session: false },
+      async (err, user, info) => {
         try {
           if (err || !user) {
             const { statusCode = 400, message } = info;
@@ -70,8 +94,6 @@ module.exports = {
   },
 
   protectedRoute: async (req, res) => {
-    console.log(req.user);
-
     res.status(200).json({
       status: 'success',
       data: {
