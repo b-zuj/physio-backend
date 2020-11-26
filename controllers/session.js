@@ -10,8 +10,9 @@ module.exports = {
     return sessionsData;
   },
   getSession: async id => Session.findOne({ _id: id }),
-  createSession: async values => {
+  createSession: async (proId, values) => {
     try {
+      values['pro'] = proId;
       const newSession = new Session(values);
       const savedSession = await newSession.save();
       const clientId = values.client;

@@ -24,8 +24,9 @@ router
   .post(
     '/',
     errorHandler(async (req, res) => {
+      const proId = req.user.id;
       const exerciseValues = req.body;
-      const exerciseData = await exerciseControllers.createExercise(exerciseValues);
+      const exerciseData = await exerciseControllers.createExercise(proId, exerciseValues);
       res.json(exerciseData).status(201).end();
     })
   )

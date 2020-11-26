@@ -24,8 +24,9 @@ router
   .post(
     '/',
     errorHandler(async (req, res) => {
+      const proId = req.user.id;
       const sessionValues = req.body;
-      const sessionData = await sessionControllers.createSession(sessionValues);
+      const sessionData = await sessionControllers.createSession(proId, sessionValues);
       res.json(sessionData).status(201).end();
     })
   )
