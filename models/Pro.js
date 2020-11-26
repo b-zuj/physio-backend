@@ -24,6 +24,11 @@ const proSchema = new Schema(
       required: [true, 'password is required'],
       minlength: 8,
     },
+    userType: {
+      type: String,
+      required: true,
+      default: 'pro',
+    },
     clients: [
       {
         type: Schema.Types.ObjectId,
