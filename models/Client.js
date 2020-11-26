@@ -28,6 +28,9 @@ const clientSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Pro',
     },
+    comment: {
+      type: String,
+    },
     sessions: [
       {
         type: Schema.Types.ObjectId,
