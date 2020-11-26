@@ -45,14 +45,16 @@ proSchema.pre('save', async next => {
   return next();
 });
 
-proSchema.methods.toJSON = () => {
-  const user = this;
-  const userObj = user.toObject();
-  delete userObj.password;
-  return userObj;
-};
+proSchema.methods.toJSON = function () {
+    const user = this;
+    const userObj = user.toObject();
+    delete userObj.password;
+    return userObj;
+  }
 
-proSchema.methods.comparePassword = async password => bcrypt.compare(password, this.password);
+proSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 proSchema.methods.generateVerificationToken = () => jwt.sign(
   { id: this._id },

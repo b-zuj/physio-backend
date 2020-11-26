@@ -1,4 +1,5 @@
 const passport = require('passport');
+const passportLocal = require('../server/passportLocal');
 const Client = require('../models/Client');
 const Pro = require('../models/Pro');
 const { ApplicationError } = require('../utils/errors');
@@ -93,8 +94,8 @@ module.exports = {
   },
 
   autoLogin: async (req, res) => {
-    let user = await Pro.findById(req.user._id).select('-password');
-    if (user) await user.populate('clients').execPopulate();
+    let user = await Pro.findById(req.user._id).select('-password').populate('clients').exec();
+    // if (user) await user.populate('clients').execPopulate();
     if (!user) {
       user = await Client.findById(req.user._id).select('-password');
       user.accType = 'client';

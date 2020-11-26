@@ -52,15 +52,16 @@ clientSchema.pre('save', async (next) => {
   return next();
 });
 
-clientSchema.methods.toJSON = () => {
+clientSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
   delete userObj.password;
   return userObj;
 };
 
-clientSchema.methods.comparePassword = async (password) =>
-  bcrypt.compare(password, this.password);
+clientSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 clientSchema.methods.generateVerificationToken = () =>
   jwt.sign({ id: this._id }, jwtPrivateSecret, {
@@ -74,6 +75,5 @@ clientSchema.statics.checkExistingField = async (field, value) => {
 };
 
 const Client = mongoose.model('Client', clientSchema);
-// clientSchema.plugin(passportLocalMongoose);
 
 module.exports = Client;
