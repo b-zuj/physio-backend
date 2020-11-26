@@ -3,7 +3,7 @@ const Client = require('../models/Client');
 
 module.exports = {
   getAllSessions: async (pro, client) => {
-    const queryFilters = {}
+    const queryFilters = {};
     pro ? queryFilters['pro'] = pro : null;
     client ? queryFilters['client'] = client : null;
     const sessionsData = await Session.find(queryFilters).exec();
@@ -31,7 +31,15 @@ module.exports = {
       });
     }
   },
-  updateSession: async (id, data) => Session.findByIdAndUpdate(id, data, {new: true}),
+  updateSession: async (id, data) => {
+    const exercises = {};
+    data.exercise ? exercises['exercise'] = data.exercise : null;
+    data.comment ? exercises['comment'] = data.comment : null;
+    const updateData = data;
+    exercises ? updateData['exercises'] = exercises : null;
+    const updatedSession = await Session.findByIdAndUpdate(id, updateData, {new: true});
+    return updatedSession;
+  },
   deleteSession: async id => {
     try {
       const clientId = await Session.findOne({ _id: id }).select('client-_id');

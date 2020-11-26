@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-// const authControllers = require("../controllers/auth");
 const sessionControllers = require('../controllers/session');
 const { errorHandler } = require('../utils/errorHandler');
-const { ConnectionStates } = require("mongoose");
 
 router
   .get(
