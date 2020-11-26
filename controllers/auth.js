@@ -94,7 +94,16 @@ module.exports = {
   },
 
   autoLogin: async (req, res) => {
-    let user = await Pro.findById(req.user._id).select('-password').populate('clients').exec();
+    let user = await Pro.findById(req.user._id)
+      .select('-password')
+      .populate({
+        path: 'clients',
+        populate: {
+          path: 'sessions',
+          model: 'Session',
+        },
+      })
+      .exec();
     // if (user) await user.populate('clients').execPopulate();
     if (!user) {
       user = await Client.findById(req.user._id).select('-password');

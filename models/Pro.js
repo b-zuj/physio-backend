@@ -36,35 +36,34 @@ const proSchema = new Schema(
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-proSchema.pre('save', async next => {
+proSchema.pre('save', async function (next) {
   if (!this.password || !this.isModified('password')) return next;
   this.password = await bcrypt.hash(this.password, parseInt(process.env.HASH));
   return next();
 });
 
 proSchema.methods.toJSON = function () {
-    const user = this;
-    const userObj = user.toObject();
-    delete userObj.password;
-    return userObj;
-  }
+  const user = this;
+  const userObj = user.toObject();
+  delete userObj.password;
+  return userObj;
+};
 
 proSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-proSchema.methods.generateVerificationToken = () => jwt.sign(
-  { id: this._id },
-  jwtPrivateSecret, {
+proSchema.methods.generateVerificationToken = function () {
+  return jwt.sign({ id: this._id }, jwtPrivateSecret, {
     expiresIn: '2h',
     algorithm: 'RS256',
-  },
-);
+  });
+};
 
-proSchema.statics.checkExistingField = async (field, value) => {
+proSchema.statics.checkExistingField = async function (field, value) {
   const checkField = await Pro.findOne({ [`${field}`]: value });
   return checkField;
 };

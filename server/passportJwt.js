@@ -5,7 +5,7 @@ const Client = require('../models/Client');
 
 const jwtPublicSecret = process.env.JWT_PUBLIC_SECRET.replace(/\\n/gm, '\n');
 
-const cookieExtractor = req => {
+const cookieExtractor = (req) => {
   let token = null;
   if (req && req.cookies.jwt) {
     token = req.cookies.jwt;
@@ -22,7 +22,7 @@ const options = {
 
 options.jwtFromRequest = ExtractJwt.fromExtractors([
   ExtractJwt.fromAuthHeaderAsBearerToken(),
-  req => cookieExtractor(req),
+  (req) => cookieExtractor(req),
 ]);
 
 passport.use(
@@ -42,7 +42,7 @@ passport.use(
         return done(err, false);
       }
     }
-  }),
+  })
 );
 
 module.exports = passport;

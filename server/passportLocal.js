@@ -13,7 +13,15 @@ passport.use(
   'login',
   new Strategy(authFields, async (req, email, password, cb) => {
     try {
-      let user = await Pro.findOne({ email }).populate('clients').exec();
+      let user = await Pro.findOne({ email })
+        .populate({
+          path: 'clients',
+          populate: {
+            path: 'sessions',
+            model: 'Session',
+          },
+        })
+        .exec();
       user = user ? user : await Client.findOne({ email });
       // user = !user && await Client.findOne({ email });
 
@@ -32,7 +40,7 @@ passport.use(
       console.error(err);
       return cb(null, false, { statusCode: 400, message: err.message });
     }
-  }),
+  })
 );
 
 passport.use(
@@ -56,7 +64,7 @@ passport.use(
       console.log(err);
       return cb(null, false, { statusCode: 400, message: err.message });
     }
-  }),
+  })
 );
 
 passport.use(
@@ -76,12 +84,16 @@ passport.use(
       newUser.password = req.body.password;
       newUser.pro = req.body.pro;
       const clientId = newUser.id;
-      await Pro.updateOne({ _id: newUser.pro }, { $push: { clients: [clientId] } }, { new: false });
+      await Pro.updateOne(
+        { _id: newUser.pro },
+        { $push: { clients: [clientId] } },
+        { new: false }
+      );
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
       console.log(err);
       return cb(null, false, { statusCode: 400, message: err.message });
     }
-  }),
+  })
 );
