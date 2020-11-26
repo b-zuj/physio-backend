@@ -93,15 +93,6 @@ module.exports = {
     })(req, res, next);
   },
 
-  protectedRoute: async (req, res) => {
-    res.status(200).json({
-      status: 'success',
-      data: {
-        message: 'Yes you are. You are a Thor-n times developer',
-      },
-    });
-  },
-
   autoLogin: async (req, res) => {
     let user = await Pro.findById(req.user._id).select('-password');
     if (user) user.accType = 'pro';
