@@ -1,11 +1,12 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
 
 const exerciseSchema = new Schema(
   {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     description: {
       type: String,
@@ -13,12 +14,13 @@ const exerciseSchema = new Schema(
     },
     media: String,
     duration: String,
-    creator: {
+    pro: {
       type: Schema.Types.ObjectId,
-      ref: "Pro",
+      ref: 'Pro',
+      required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = mongoose.model("Exercise", exerciseSchema);
+module.exports = mongoose.model('Exercise', exerciseSchema);

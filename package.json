@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint '**/*.js'",
+    "lint-watch": "nodemon --exec 'npm run lint --silent'"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,8 @@
     "validator": "^13.1.17"
   },
   "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-config-salt": "^1.1.0",
     "nodemon": "^2.0.6"
   }
 }

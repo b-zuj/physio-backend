@@ -1,4 +1,5 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
 
 const sessionControllers = require('../controllers/session');
@@ -11,7 +12,7 @@ router
       const { pro, client } = req.query;
       const sessionsData = await sessionControllers.getAllSessions(pro, client);
       res.json(sessionsData).status(200).end();
-    })
+    }),
   )
   .get(
     '/:id',
@@ -19,15 +20,16 @@ router
       const { id } = req.params;
       const sessionData = await sessionControllers.getSession(id);
       res.json(sessionData).status(200).end();
-    })
+    }),
   )
   .post(
     '/',
     errorHandler(async (req, res) => {
+      const proId = req.user.id;
       const sessionValues = req.body;
-      const sessionData = await sessionControllers.createSession(sessionValues);
+      const sessionData = await sessionControllers.createSession(proId, sessionValues);
       res.json(sessionData).status(201).end();
-    })
+    }),
   )
   .put(
     '/:id',
@@ -43,8 +45,8 @@ router
     errorHandler(async (req, res) => {
       const { id } = req.params;
       await sessionControllers.deleteSession(id);
-      res.status(200).end()
+      res.status(200).end();
     }),
-  )
+  );
 
 module.exports = router;

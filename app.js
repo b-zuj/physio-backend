@@ -22,13 +22,13 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Methods',
-    'OPTIONS, GET, POST, PUT, PATCH, DELETE'
+    'OPTIONS, GET, POST, PUT, PATCH, DELETE',
   );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
-  next();
+  return next();
 });
 
 app.use(express.json());
@@ -49,7 +49,7 @@ app.use('/sessions', authenticate, sessionRoutes);
 app.use('/exercises', authenticate, exerciseRoutes);
 
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -57,9 +57,9 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
-      error: {
-          message: err.message
-      }
+    error: {
+      message: err.message,
+    },
   });
 });
 
