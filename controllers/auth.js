@@ -45,7 +45,7 @@ module.exports = {
           console.log(error);
           throw new ApplicationError(500, error);
         }
-      },
+      }
     )(req, res, next);
   },
 
@@ -70,7 +70,7 @@ module.exports = {
           console.log(error);
           throw new ApplicationError(500, error);
         }
-      },
+      }
     )(req, res, next);
   },
 
@@ -94,19 +94,15 @@ module.exports = {
 
   autoLogin: async (req, res) => {
     let user = await Pro.findById(req.user._id).select('-password');
-<<<<<<< HEAD
     if (user) await user.populate('clients').execPopulate();
-=======
-    if (user) {
-      user.accType = 'pro';
-    }
->>>>>>> e1dadcb413ca606326abbed9927c5780a30fcc40
     if (!user) {
       user = await Client.findById(req.user._id).select('-password');
       user.accType = 'client';
     }
     if (!user) {
-      return res.status(404).send({ message: 'Session expired. Please log in again.' });
+      return res
+        .status(404)
+        .send({ message: 'Session expired. Please log in again.' });
     }
     res.send({ ...user._doc });
   },
