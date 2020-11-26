@@ -24,16 +24,7 @@ module.exports = {
       await Exercise.deleteOne({ _id: id });
       return;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw ({ status: 500, code: 'FAILED_TRANSACTION', message: err.message });
     }
   },
 };

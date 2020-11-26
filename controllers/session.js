@@ -1,5 +1,6 @@
 const Session = require('../models/Session');
 const Client = require('../models/Client');
+const { ApplicationError } = require('../utils/errors');
 
 module.exports = {
   getAllSessions: async (pro, client) => {
@@ -38,16 +39,7 @@ module.exports = {
       await Client.updateOne({ _id: clientId }, { $push: { sessions: [sessionId] } }, { new: false });
       return savedSession;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      return res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw new ApplicationError(500, error);
     }
   },
   updateSession: async (id, data) => {
@@ -75,16 +67,7 @@ module.exports = {
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw new ApplicationError(500, error);
     }
   },
 };

@@ -1,5 +1,6 @@
 const Client = require('../models/Client');
 const Pro = require('../models/Pro');
+const { ApplicationError } = require('../utils/errors');
 
 module.exports = {
   getAllClients: async pro => {
@@ -17,16 +18,7 @@ module.exports = {
       await Client.deleteOne({ _id: id });
       return;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw new ApplicationError(500, error);
     }
   },
 };

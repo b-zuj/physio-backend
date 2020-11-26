@@ -104,7 +104,7 @@ module.exports = {
         },
       })
       .exec();
-    // if (user) await user.populate('clients').execPopulate();
+    
     if (!user) {
       user = await Client.findById(req.user._id).select('-password');
       user.accType = 'client';
