@@ -13,7 +13,7 @@ passport.use(
   'login',
   new Strategy( authFields, async (req, email, password, cb) => {
     try {
-      let user = await Pro.findOne({ email });
+      let user = await Pro.findOne({ email }).populate('clients').exec();
       user = user ? user : await Client.findOne({ email });
 
       if (!user || !user.password) {
