@@ -75,7 +75,7 @@ passport.use(
       newUser.email = req.body.email;
       newUser.password = req.body.password;
       newUser.pro = req.body.pro;
-      const clientId = newUser._id;
+      const clientId = newUser.id;
       await Pro.updateOne({ _id: newUser.pro }, { $push: { clients: [clientId] } }, { new: false });
       await newUser.save();
       return cb(null, newUser);

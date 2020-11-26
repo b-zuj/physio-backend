@@ -4,8 +4,8 @@ const Client = require('../models/Client');
 module.exports = {
   getAllSessions: async (pro, client) => {
     const queryFilters = {};
-    pro ? queryFilters['pro'] = pro : null;
-    client ? queryFilters['client'] = client : null;
+    pro ? queryFilters.pro = pro : null;
+    client ? queryFilters.client = client : null;
     const sessionsData = await Session.find(queryFilters).exec();
     return sessionsData;
   },
@@ -15,8 +15,8 @@ module.exports = {
       const newSession = new Session(values);
       const savedSession = await newSession.save();
       const clientId = values.client;
-      const sessionId = savedSession._id;
-      await Client.updateOne({ _id: clientId }, { $push: { sessions: [sessionId] } }, {new: false})
+      const sessionId = savedSession.id;
+      await Client.updateOne({ _id: clientId }, { $push: { sessions: [sessionId] } }, { new: false });
       return savedSession;
     } catch (err) {
       let message = err;
@@ -24,7 +24,7 @@ module.exports = {
         message = info.message;
       }
       return res.status(500).json({
-        status: "error",
+        status: 'error',
         error: {
           message,
         },
@@ -33,17 +33,17 @@ module.exports = {
   },
   updateSession: async (id, data) => {
     const exercises = {};
-    data.exercise ? exercises['exercise'] = data.exercise : null;
-    data.comment ? exercises['comment'] = data.comment : null;
+    data.exercise ? exercises.exercise = data.exercise : null;
+    data.comment ? exercises.comment = data.comment : null;
     const updateData = data;
-    exercises ? updateData['exercises'] = exercises : null;
-    const updatedSession = await Session.findByIdAndUpdate(id, updateData, {new: true});
+    exercises ? updateData.exercises = exercises : null;
+    const updatedSession = await Session.findByIdAndUpdate(id, updateData, { new: true });
     return updatedSession;
   },
   deleteSession: async id => {
     try {
       const clientId = await Session.findOne({ _id: id }).select('client-_id');
-      await Client.updateOne({ _id: clientId }, { $pull: { sessions: [id] } }, {new: false});
+      await Client.updateOne({ _id: clientId }, { $pull: { sessions: [id] } }, { new: false });
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {
@@ -51,8 +51,8 @@ module.exports = {
       if (info) {
         message = info.message;
       }
-      return res.status(500).json({
-        status: "error",
+      res.status(500).json({
+        status: 'error',
         error: {
           message,
         },
