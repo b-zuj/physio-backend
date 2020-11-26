@@ -1,7 +1,7 @@
 const passport = require('passport');
 const { Strategy } = require('passport-local');
 const Pro = require('../models/Pro');
-const Client = require('../models/Client')
+const Client = require('../models/Client');
 
 const authFields = {
   usernameField: 'email',
@@ -11,10 +11,11 @@ const authFields = {
 
 passport.use(
   'login',
-  new Strategy( authFields, async (req, email, password, cb) => {
+  new Strategy(authFields, async (req, email, password, cb) => {
     try {
       let user = await Pro.findOne({ email }).populate('clients').exec();
       user = user ? user : await Client.findOne({ email });
+      // user = !user && await Client.findOne({ email });
 
       if (!user || !user.password) {
         return cb(null, false, { message: 'Incorrect email or password.' });
@@ -28,10 +29,10 @@ passport.use(
 
       return cb(null, user, { message: 'Logged In Successfully' });
     } catch (err) {
-      console.log(err);
-      return cb(null, false, {statusCode: 400, message: err.message});
+      console.error(err);
+      return cb(null, false, { statusCode: 400, message: err.message });
     }
-  })
+  }),
 );
 
 passport.use(
@@ -46,18 +47,18 @@ passport.use(
         });
       }
       const newUser = new Pro();
-      newUser.name = req.body.name,
+      newUser.name = req.body.name;
       newUser.email = req.body.email;
       newUser.password = req.body.password;
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
       console.log(err);
-      return cb(null, false, {statusCode: 400, message: err.message});
+      return cb(null, false, { statusCode: 400, message: err.message });
     }
   }),
 );
-  
+
 passport.use(
   'signupClient',
   new Strategy(authFields, async (req, email, password, cb) => {
@@ -70,17 +71,17 @@ passport.use(
         });
       }
       const newUser = new Client();
-      newUser.name = req.body.name,
+      newUser.name = req.body.name;
       newUser.email = req.body.email;
       newUser.password = req.body.password;
       newUser.pro = req.body.pro;
-      const clientId = newUser._id;
-      await Pro.updateOne({ _id: newUser.pro }, { $push: { clients: [clientId] } }, {new: false})
+      const clientId = newUser.id;
+      await Pro.updateOne({ _id: newUser.pro }, { $push: { clients: [clientId] } }, { new: false });
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
       console.log(err);
-      return cb(null, false, {statusCode: 400, message: err.message});
+      return cb(null, false, { statusCode: 400, message: err.message });
     }
   }),
 );

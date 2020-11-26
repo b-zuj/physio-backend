@@ -1,8 +1,7 @@
 const passport = require('passport');
 const Client = require('../models/Client');
 const Pro = require('../models/Pro');
-const passportLocal = require('../server/passportLocal');
-const { ApplicationError, NotFoundError } = require('../utils/errors');
+const { ApplicationError } = require('../utils/errors');
 
 const createCookieFromToken = (user, statusCode, req, res) => {
   const token = user.generateVerificationToken();
@@ -34,7 +33,7 @@ module.exports = {
           if (err || !user) {
             const { statusCode = 400, message } = info;
 
-            return res.status(statusCode).json({
+            res.status(statusCode).json({
               status: 'error',
               error: {
                 message,
@@ -46,7 +45,7 @@ module.exports = {
           console.log(error);
           throw new ApplicationError(500, error);
         }
-      }
+      },
     )(req, res, next);
   },
 
@@ -71,7 +70,7 @@ module.exports = {
           console.log(error);
           throw new ApplicationError(500, error);
         }
-      }
+      },
     )(req, res, next);
   },
 
@@ -95,15 +94,16 @@ module.exports = {
 
   autoLogin: async (req, res) => {
     let user = await Pro.findById(req.user._id).select('-password');
-    if (user) user.accType = 'pro';
+    if (user) {
+      user.accType = 'pro';
+    }
     if (!user) {
       user = await Client.findById(req.user._id).select('-password');
       user.accType = 'client';
     }
-    if (!user)
-      return res
-        .status(404)
-        .send({ message: 'Session expired. Please log in again.' });
+    if (!user) {
+      return res.status(404).send({ message: 'Session expired. Please log in again.' });
+    }
     res.send({ ...user._doc });
   },
 };
