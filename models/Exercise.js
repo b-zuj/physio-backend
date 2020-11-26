@@ -14,9 +14,10 @@ const exerciseSchema = new Schema(
     },
     media: String,
     duration: String,
-    creator: {
+    pro: {
       type: Schema.Types.ObjectId,
       ref: 'Pro',
+      required: true,
     },
   },
   { timestamps: true },

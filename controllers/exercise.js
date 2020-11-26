@@ -9,7 +9,8 @@ module.exports = {
     return sessionsData;
   },
   getExercise: async id => Exercise.findOne({ _id: id }),
-  createExercise: async values => {
+  createExercise: async (proId, values) => {
+    values['pro'] = proId;
     const newExercise = new Exercise(values);
     const savedExercise = await newExercise.save();
     return savedExercise;
