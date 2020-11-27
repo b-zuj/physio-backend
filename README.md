@@ -19,14 +19,16 @@ note: authentication required
 ```
 
 	
-### /pros				note: authentication required for all pros paths
+### /pros				
+<i>note: authentication required for all pros paths</i>
 ```
 /:id - GET			returns: pro data populated with clients data
 /:id - PUT			requires in body: data to be updated
 				returns: updated pro data
 /:id - DELETE		note:
 ```
-### /clients			note: authentication required for all clients paths
+### /clients			
+<i>note: authentication required for all clients paths</i>
 ```
 / - GET			available filter: pro id in query string
 returns: all clients / all clients matching the filter value, populated with session data
@@ -38,7 +40,8 @@ returns: all clients / all clients matching the filter value, populated with ses
         
 /:id - DELETE		note: client id is deleted also from pro’s account clients’ list
 ```
-### /sessions			note: authentication required for all sessions paths
+### /sessions			
+<i> note: authentication required for all sessions paths</i>
 ```
 / - GET			available filter: pro id and/or client id in query string
 returns: all sessions / all sessions matching the filter value populated with exercises data
@@ -55,7 +58,8 @@ returns: updated session data populated with exercise data
 
 /:id - DELETE		note: session id is deleted also from client’s account sessions’ list
 ```
-### /exercises			note: authentication required for all exercises paths
+### /exercises			
+<i>note: authentication required for all exercises paths</i>
 ```
 / - GET			available filter: pro id and title in query string
 returns: all exercises / all exercises matching the filter values
