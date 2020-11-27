@@ -46,7 +46,7 @@ const clientSchema = new Schema(
   { timestamps: true }
 );
 
-clientSchema.pre('save', async (next) => {
+clientSchema.pre('save', async function (next) {
   if (!this.password || !this.isModified('password')) return next;
   this.password = await bcrypt.hash(this.password, parseInt(process.env.HASH));
   return next();
@@ -63,11 +63,12 @@ clientSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-clientSchema.methods.generateVerificationToken = () =>
+clientSchema.methods.generateVerificationToken = function () {
   jwt.sign({ id: this._id }, jwtPrivateSecret, {
     expiresIn: '2h',
     algorithm: 'RS256',
   });
+}
 
 clientSchema.statics.checkExistingField = async (field, value) => {
   const checkField = await Client.findOne({ [`${field}`]: value });
