@@ -1,15 +1,34 @@
 const Session = require('../models/Session');
 const Client = require('../models/Client');
+const { ApplicationError } = require('../utils/errors');
 
 module.exports = {
   getAllSessions: async (pro, client) => {
     const queryFilters = {};
     pro ? queryFilters.pro = pro : null;
     client ? queryFilters.client = client : null;
-    const sessionsData = await Session.find(queryFilters).exec();
+    const sessionsData = await Session
+      .find(queryFilters)
+      .populate({
+        path: 'exercises', 
+        populate: {
+          path: 'exercise',
+          model: 'Exercise',
+        },
+      })
+      .exec();
     return sessionsData;
   },
-  getSession: async id => Session.findOne({ _id: id }),
+  getSession: async id => Session
+    .findOne({ _id: id })
+    .populate({
+      path: 'exercises', 
+      populate: {
+        path: 'exercise',
+        model: 'Exercise',
+      },
+    })
+    .exec(),
   createSession: async (proId, values) => {
     try {
       values['pro'] = proId;
@@ -20,16 +39,7 @@ module.exports = {
       await Client.updateOne({ _id: clientId }, { $push: { sessions: [sessionId] } }, { new: false });
       return savedSession;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      return res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw new ApplicationError(500, error);
     }
   },
   updateSession: async (id, data) => {
@@ -38,7 +48,16 @@ module.exports = {
     data.comment ? exercises.comment = data.comment : null;
     const updateData = data;
     exercises ? updateData.exercises = exercises : null;
-    const updatedSession = await Session.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedSession = await Session
+      .findByIdAndUpdate(id, updateData, { new: true })
+      .populate({
+        path: 'exercises', 
+        populate: {
+          path: 'exercise',
+          model: 'Exercise',
+        },
+      })
+      .exec();
     return updatedSession;
   },
   deleteSession: async id => {
@@ -48,16 +67,7 @@ module.exports = {
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {
-      let message = err;
-      if (info) {
-        message = info.message;
-      }
-      res.status(500).json({
-        status: 'error',
-        error: {
-          message,
-        },
-      });
+      throw new ApplicationError(500, error);
     }
   },
 };
