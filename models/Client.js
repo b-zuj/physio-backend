@@ -64,7 +64,7 @@ clientSchema.methods.comparePassword = async function (password) {
 };
 
 clientSchema.methods.generateVerificationToken = function () {
-  jwt.sign({ id: this._id }, jwtPrivateSecret, {
+  return jwt.sign({ id: this._id }, jwtPrivateSecret, {
     expiresIn: '2h',
     algorithm: 'RS256',
   });
