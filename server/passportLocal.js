@@ -19,6 +19,10 @@ passport.use(
           populate: {
             path: 'sessions',
             model: 'Session',
+            populate: {
+              path: 'exercises.exercise',
+              model: 'Exercise',
+            },
           },
         })
         .exec();
