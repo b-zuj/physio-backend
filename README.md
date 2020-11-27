@@ -2,18 +2,18 @@
 
 ### /auth
 
-```
-/signup - POST		required in body:  name, email, password
-				returns: new pro data + authorization token
+```node
+/signup - POST		require in body:  name, email, password
+				returns: new Pro data + authorization token
         
-/client/signup - POST	required in body:  name, email, password, pro id
-				returns: new customer data + authorization token
+/client/signup - POST	require in body:  name, email, password, pro id
+				returns: new Client data + authorization token
         
-/login - POST		required in body:  email, password
-				returns: new user data + authorization token
+/login - POST		require in body:  email, password
+				returns:  Pro/Client data + authorization token
         
-/login - GET		requires authorization token
-returns: user data (for pros data is populated with client and session data
+/login - GET		require authorization token
+				returns: user data (for pros data is populated with client and session data
 
 note: authentication required
 ```
@@ -21,7 +21,7 @@ note: authentication required
 	
 ### /pros				
 <i>note: authentication required for all pros paths</i>
-```
+```node
 /:id - GET			returns: pro data populated with clients data
 /:id - PUT			requires in body: data to be updated
 				returns: updated pro data
@@ -42,7 +42,7 @@ returns: all clients / all clients matching the filter value, populated with ses
 ```
 ### /sessions			
 <i> note: authentication required for all sessions paths</i>
-```
+```node
 / - GET			available filter: pro id and/or client id in query string
 returns: all sessions / all sessions matching the filter value populated with exercises data
 
@@ -60,7 +60,7 @@ returns: updated session data populated with exercise data
 ```
 ### /exercises			
 <i>note: authentication required for all exercises paths</i>
-```
+```node
 / - GET			available filter: pro id and title in query string
 returns: all exercises / all exercises matching the filter values
 
