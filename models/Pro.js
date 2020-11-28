@@ -35,6 +35,12 @@ const proSchema = new Schema(
         ref: 'Client',
       },
     ],
+    invitations: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Invitation',
+      },
+    ],
   },
   { timestamps: true }
 );

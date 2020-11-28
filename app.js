@@ -14,6 +14,7 @@ const proRoutes = require('./routes/pro');
 const clientRoutes = require('./routes/client');
 const sessionRoutes = require('./routes/session');
 const exerciseRoutes = require('./routes/exercise');
+const invitationRoutes = require('./routes/invitation');
 const { authenticate } = require('./middleware/authenticate');
 
 const app = express();
@@ -44,7 +45,7 @@ app.use('/auth', authRoutes);
 
 app.use('/pros', authenticate, proRoutes);
 app.use('/clients', authenticate, clientRoutes);
-
+app.use('/invitations', authenticate, invitationRoutes);
 app.use('/sessions', authenticate, sessionRoutes);
 app.use('/exercises', authenticate, exerciseRoutes);
 
