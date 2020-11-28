@@ -6,8 +6,8 @@ module.exports = {
     const queryFilters = {};
     pro ? queryFilters.pro = pro : null;
     title ? queryFilters.title = title : null;
-    const sessionsData = await Exercise.find(queryFilters).exec();
-    return sessionsData;
+    const exercisesData = await Exercise.find(queryFilters).exec();
+    return exercisesData;
   },
   getExercise: async id => Exercise.findOne({ _id: id }),
   createExercise: async (proId, values) => {
