@@ -3,7 +3,7 @@ const validator = require('validator');
 
 const { Schema } = mongoose;
 
-const inviteSchema = new Schema(
+const invitationSchema = new Schema(
   {
     email: {
       type: String,
@@ -19,4 +19,4 @@ const inviteSchema = new Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model('Invite', inviteSchema);
+module.exports = mongoose.model('Invitation', invitationSchema);
