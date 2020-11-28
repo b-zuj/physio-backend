@@ -1,4 +1,5 @@
 const Invitation = require('../models/Invitation');
+const Pro = require('../models/Pro');
 
 module.exports = {
   getAllInvitations: async pro => {
@@ -8,11 +9,25 @@ module.exports = {
     return invitationData;
   },
   getInvitation: async id => Invitation.findOne({ _id: id }),
-  createInvitation: async (proId, values) => {
-    values.pro = proId;
-    const newInvitation = new Invitation(values);
-    const savedInvitation = await newInvitation.save();
-    return savedInvitation;
+  createInvitation: async (pro, values) => {
+    try {
+      values.pro = pro;
+      const newInvitation = new Invitation(values);
+      const savedInvitation = await newInvitation.save();
+      const invitationId = savedInvitation.id;
+      await Pro.updateOne({ _id: pro }, { $push: { invitations: [invitationId] } }, { new: false });
+      return savedInvitation;
+    } catch (err) {
+      throw ({ status: 500, code: 'FAILED_TRANSACTION', message: err.message });
+    }
   },
-  deleteInvitation: async id => Invitation.deleteOne({ _id: id }),
+  deleteInvitation: async id => {
+    try {
+      await Pro.findOneAndUpdate({ invitations: { '$in': [id] } }, { $pull: { invitations: { $in: id } } }, { new: false });
+      await Invitation.deleteOne({ _id: id });
+      return;
+    } catch (err) {
+      throw ({ status: 500, code: 'FAILED_TRANSACTION', message: err.message });
+    }
+  },
 };

@@ -25,9 +25,9 @@ router
   .post(
     '/',
     errorHandler(async (req, res) => {
-      const proId = req.user.id;
+      const pro = req.user.id;
       const invitationValues = req.body;
-      const invitationData = await invitationControllers.createInvitation(proId, invitationValues);
+      const invitationData = await invitationControllers.createInvitation(pro, invitationValues);
       res.json(invitationData).status(201).end();
     }),
   )

@@ -2,6 +2,7 @@ const passport = require('passport');
 const { Strategy } = require('passport-local');
 const Pro = require('../models/Pro');
 const Client = require('../models/Client');
+const Invitation = require('../models/Invitation');
 
 const authFields = {
   usernameField: 'email',
@@ -87,12 +88,18 @@ passport.use(
       newUser.email = req.body.email;
       newUser.password = req.body.password;
       newUser.pro = req.body.pro;
-      const clientId = newUser.id;
-      await Pro.updateOne(
+      const invitation = await Invitation.findOne({ email: [newUser.email] });
+      await Pro.findOneAndUpdate(
         { _id: newUser.pro },
-        { $push: { clients: [clientId] } },
+        { $push: { clients: [newUser.id] } },
         { new: false }
       );
+      await Pro.findOneAndUpdate(
+        { _id: newUser.pro },
+        { $pull: { invitations: { $in: invitation.id } } },
+        { new: false }
+      );
+      await Invitation.deleteOne({ _id: invitation.id })
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {
