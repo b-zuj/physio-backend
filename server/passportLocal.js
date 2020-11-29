@@ -15,18 +15,7 @@ passport.use(
   new Strategy(authFields, async (req, email, password, cb) => {
     try {
       let user = await Pro.findOne({ email })
-        .populate({
-          path: 'clients',
-          populate: {
-            path: 'sessions',
-            model: 'Session',
-            populate: {
-              path: 'exercises.exercise',
-              model: 'Exercise',
-            },
-          },
-        })
-        .exec();
+      .exec();
       user = user ? user : await Client.findOne({ email });
       // user = !user && await Client.findOne({ email });
 
@@ -99,7 +88,7 @@ passport.use(
         { $pull: { invitations: { $in: invitation.id } } },
         { new: false }
       );
-      await Invitation.deleteOne({ _id: invitation.id })
+      await Invitation.deleteOne({ _id: invitation.id });
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {

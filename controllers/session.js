@@ -19,14 +19,12 @@ module.exports = {
     return sessionsData;
   },
   getSession: async (id) =>
-    Session.findOne({ _id: id })
+    await Session.findOne({ _id: id })
       .populate({
-        path: 'exercises',
-        populate: {
-          path: 'exercise',
-          model: 'Exercise',
-        },
+        path: 'exercises.exercise',
+        model: 'Exercise',
       })
+      .populate('client')
       .exec(),
   createSession: async (proId, values) => {
     try {
