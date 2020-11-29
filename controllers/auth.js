@@ -97,7 +97,6 @@ module.exports = {
     let user = await Pro.findById(req.user._id)
       .select('-password')
       .populate({
-        path: 'invitations',
         path: 'clients',
         populate: {
           path: 'sessions',
@@ -107,6 +106,9 @@ module.exports = {
             model: 'Exercise',
           },
         },
+      })
+      .populate({
+        path: 'invitations'
       })
       .exec();
     

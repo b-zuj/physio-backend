@@ -4,7 +4,6 @@ module.exports = {
   getProData: async id => Pro
     .findOne({ _id: id })
     .populate({
-      path: 'invitations',
       path: 'clients',
       populate: {
         path: 'sessions',
@@ -15,11 +14,13 @@ module.exports = {
         },
       },
     })
+    .populate({
+      path: 'invitations'
+    })
     .exec(),
   updatePro: async (id, data) => Pro
     .findByIdAndUpdate(id, data, { new: true })
     .populate({
-      path: 'invitations',
       path: 'clients',
       populate: {
         path: 'sessions',
@@ -29,6 +30,9 @@ module.exports = {
           model: 'Exercise',
         },
       },
+    })
+    .populate({
+      path: 'invitations'
     })
     .exec(),
   deletePro: async id => Pro.deleteOne({ _id: id }),

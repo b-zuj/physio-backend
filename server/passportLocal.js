@@ -26,6 +26,8 @@ passport.use(
             },
           },
         })
+        .populate({
+          path: 'invitations'})
         .exec();
       user = user ? user : await Client.findOne({ email });
       // user = !user && await Client.findOne({ email });
