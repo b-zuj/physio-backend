@@ -94,39 +94,9 @@ module.exports = {
   },
 
   autoLogin: async (req, res) => {
-    let user = await Pro.findById(req.user._id)
-      .select('-password')
-      .populate({
-        path: 'clients',
-        populate: {
-          path: 'sessions',
-          model: 'Session',
-          populate: {
-            path: 'exercises.exercise',
-            model: 'Exercise',
-          },
-        },
-      })
-      .populate({
-        path: 'invitations'
-      })
-      .exec();
-    
+    let user = await Pro.findById(req.user._id).select('-password').exec();
     if (!user) {
-      user = await Client.findById(req.user._id)
-        .select('-password')
-        .populate({
-          path: 'sessions',
-          model: 'Session',
-          populate: {
-            path: 'exercises.exercise',
-            model: 'Exercise',
-          },
-        })
-        .populate({
-          path: 'pro'
-        })
-        .exec();
+      user = await Client.findById(req.user._id).select('-password').exec()
       user.accType = 'client';
     }
     if (!user) {

@@ -14,35 +14,8 @@ passport.use(
   'login',
   new Strategy(authFields, async (req, email, password, cb) => {
     try {
-      let user = await Pro.findOne({ email })
-        .populate({
-          path: 'clients',
-          populate: {
-            path: 'sessions',
-            model: 'Session',
-            populate: {
-              path: 'exercises.exercise',
-              model: 'Exercise',
-            },
-          },
-        })
-        .populate({
-          path: 'invitations'})
-        .exec();
-      user = user ? user : await Client.findOne({ email })
-        // .select('-password')
-        .populate({
-          path: 'sessions',
-          model: 'Session',
-          populate: {
-            path: 'exercises.exercise',
-            model: 'Exercise',
-          },
-        })
-        .populate({
-          path: 'pro'
-        })
-        .exec();
+      let user = await Pro.findOne({ email });
+      user = user ? user : await Client.findOne({ email });
       // user = !user && await Client.findOne({ email });
 
       if (!user || !user.password) {
@@ -114,7 +87,7 @@ passport.use(
         { $pull: { invitations: { $in: invitation.id } } },
         { new: false }
       );
-      await Invitation.deleteOne({ _id: invitation.id })
+      await Invitation.deleteOne({ _id: invitation.id });
       await newUser.save();
       return cb(null, newUser);
     } catch (err) {

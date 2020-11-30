@@ -9,8 +9,12 @@ module.exports = {
         path: 'sessions',
         model: 'Session',
         populate: {
-          path: 'exercises.exercise',
-          model: 'Exercise',
+          path: 'sessions',
+          model: 'Session',
+          populate: {
+            path: 'exercises.exercise',
+            model: 'Exercise',
+          },
         },
       },
     })
@@ -26,8 +30,12 @@ module.exports = {
         path: 'sessions',
         model: 'Session',
         populate: {
-          path: 'exercises.exercise',
-          model: 'Exercise',
+          path: 'sessions',
+          model: 'Session',
+          populate: {
+            path: 'exercises.exercise',
+            model: 'Exercise',
+          },
         },
       },
     })
