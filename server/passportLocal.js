@@ -14,8 +14,7 @@ passport.use(
   'login',
   new Strategy(authFields, async (req, email, password, cb) => {
     try {
-      let user = await Pro.findOne({ email })
-      .exec();
+      let user = await Pro.findOne({ email });
       user = user ? user : await Client.findOne({ email });
       // user = !user && await Client.findOne({ email });
 
