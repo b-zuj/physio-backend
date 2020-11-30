@@ -8,6 +8,7 @@ module.exports = {
     pro ? (queryFilters.pro = pro) : null;
     client ? (queryFilters.client = client) : null;
     const sessionsData = await Session.find(queryFilters)
+      .populate('pro')
       .populate({
         path: 'exercises',
         populate: {
@@ -20,6 +21,7 @@ module.exports = {
   },
   getSession: async (id) =>
     await Session.findOne({ _id: id })
+      .populate('pro')
       .populate({
         path: 'exercises.exercise',
         model: 'Exercise',
