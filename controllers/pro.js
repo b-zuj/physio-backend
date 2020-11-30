@@ -9,10 +9,9 @@ module.exports = {
         path: 'sessions',
         model: 'Session',
         populate: {
-          path: 'sessions',
-          model: 'Session',
+          path: 'exercises',
           populate: {
-            path: 'exercises.exercise',
+            path: 'exercise',
             model: 'Exercise',
           },
         },
@@ -30,10 +29,9 @@ module.exports = {
         path: 'sessions',
         model: 'Session',
         populate: {
-          path: 'sessions',
-          model: 'Session',
+          path: 'exercises',
           populate: {
-            path: 'exercises.exercise',
+            path: 'exercise',
             model: 'Exercise',
           },
         },

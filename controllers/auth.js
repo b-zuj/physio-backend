@@ -96,7 +96,7 @@ module.exports = {
   autoLogin: async (req, res) => {
     let user = await Pro.findById(req.user._id).select('-password').exec();
     if (!user) {
-      user = await Client.findById(req.user._id).select('-password').exec()
+      user = await Client.findById(req.user._id).select('-password').exec();
       user.accType = 'client';
     }
     if (!user) {
