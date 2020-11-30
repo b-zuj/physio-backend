@@ -113,7 +113,20 @@ module.exports = {
       .exec();
     
     if (!user) {
-      user = await Client.findById(req.user._id).select('-password');
+      user = await Client.findById(req.user._id)
+        .select('-password')
+        .populate({
+          path: 'sessions',
+          model: 'Session',
+          populate: {
+            path: 'exercises.exercise',
+            model: 'Exercise',
+          },
+        })
+        .populate({
+          path: 'pro'
+        })
+        .exec();
       user.accType = 'client';
     }
     if (!user) {

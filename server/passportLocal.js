@@ -29,7 +29,20 @@ passport.use(
         .populate({
           path: 'invitations'})
         .exec();
-      user = user ? user : await Client.findOne({ email });
+      user = user ? user : await Client.findOne({ email })
+        // .select('-password')
+        .populate({
+          path: 'sessions',
+          model: 'Session',
+          populate: {
+            path: 'exercises.exercise',
+            model: 'Exercise',
+          },
+        })
+        .populate({
+          path: 'pro'
+        })
+        .exec();
       // user = !user && await Client.findOne({ email });
 
       if (!user || !user.password) {
