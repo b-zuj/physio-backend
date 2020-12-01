@@ -20,12 +20,11 @@ module.exports = {
     Exercise.findByIdAndUpdate(id, data, { new: true }),
   deleteExercise: async (id) => {
     try {
-      const clientId = await Exercise.findOne({ _id: id }).select('client-_id');
-      await Session.update(
-        { exercises: { $in: [id] } },
-        { $pull: { exercises: [id] } },
-        { new: false }
-      );
+      await Session.updateMany(
+        { 'exercises.exercise': id } ,
+        { $pull: { exercises: { exercise: id } } },
+        { new: false, safe: true, multi: true }
+      ).exec();
       await Exercise.deleteOne({ _id: id });
       return;
     } catch (err) {
