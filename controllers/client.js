@@ -1,5 +1,6 @@
 const Client = require('../models/Client');
 const Pro = require('../models/Pro');
+const Session = require('../models/Session');
 const { ApplicationError } = require('../utils/errors');
 
 module.exports = {
@@ -13,8 +14,14 @@ module.exports = {
   updateClient: async (id, data) => Client.findByIdAndUpdate(id, data, { new: true }),
   deleteClient: async id => {
     try {
-      const proId = await Client.findOne({ _id: id }).select('pro -_id');
-      await Pro.updateOne(proId, { $pull: { customer: [id] } }, { new: false });
+      // const proId = await Client.findOne({ _id: id }).select('pro -_id');
+      // await Pro.updateOne(proId, { $pull: { customer: [id] } }, { new: false });
+      await Pro.updateOne(
+        { clients: { $in: id } } ,
+        { $pull: { clients: id } },
+        { new: false, safe: true, multi: true }
+      ).exec();
+      await Session.deleteMany({ client: id }).exec();
       await Client.deleteOne({ _id: id });
       return;
     } catch (err) {

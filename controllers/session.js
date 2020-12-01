@@ -54,7 +54,7 @@ module.exports = {
   },
   deleteSession: async (id) => {
     try {
-      const updatedClient = await Client.updateOne(
+      await Client.updateOne(
         { sessions: { $in: id } } ,
         { $pull: { sessions: id } },
         { new: false, safe: true, multi: true }
