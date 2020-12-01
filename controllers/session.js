@@ -54,12 +54,11 @@ module.exports = {
   },
   deleteSession: async (id) => {
     try {
-      const clientId = await Session.findOne({ _id: id }).select('client-_id');
-      await Client.updateOne(
-        { _id: clientId },
-        { $pull: { sessions: [id] } },
-        { new: false }
-      );
+      const updatedClient = await Client.updateOne(
+        { sessions: { $in: id } } ,
+        { $pull: { sessions: id } },
+        { new: false, safe: true, multi: true }
+      ).exec();
       await Session.deleteOne({ _id: id });
       return;
     } catch (err) {
