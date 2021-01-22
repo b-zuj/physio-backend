@@ -1,19 +1,15 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const { Schema } = mongoose;
 
-const exerciseSchema = new Schema(
+const invitationSchema = new Schema(
   {
-    title: {
+    email: {
       type: String,
+      validate: [validator.isEmail, 'Please provide a valid email address'],
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    media: String,
-    duration: String,
     pro: {
       type: Schema.Types.ObjectId,
       ref: 'Pro',
@@ -23,4 +19,4 @@ const exerciseSchema = new Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model('Exercise', exerciseSchema);
+module.exports = mongoose.model('Invitation', invitationSchema);
