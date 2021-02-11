@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/travis-ci/travis-web.svg?branch=master)](https://travis-ci.com/travis-ci/travis-web)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
-### THIS IS REST API BACKEND FOR [PHYSIO - FRONTEND](https://github.com/MaciejGL/final-project-frontend)
+### THIS IS REST API BACKEND FOR [PHYSIO - FRONTEND](https://github.com/b-zuj/physio-frontend)
 
 This project was created by [Maciej Glowacki](https://github.com/MaciejGL), [Stian Klasbu](https://github.com/mountwebs), and [Barbara Zujewska](https://github.com/b-zuj).
 
